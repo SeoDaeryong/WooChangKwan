@@ -1,4 +1,4 @@
-<template>
+﻿<template>
     <div class="container">
         <swiper :options="swiperOptions">
             <swiper-slide v-for="(c, index) in category" :key="index">
@@ -116,7 +116,7 @@ export default {
       for(var i = 0; i < this.category.length; i++) {
         this.category[i].order = i+1;
       }
-      axios.post('http://cgw01.nlp.nhnsystem.com:8300/api/category_list', this.category)
+      axios.post('http://localhost:8300/api/category_list', this.category)
       .then(response => {
       })
       .catch(function (error) {

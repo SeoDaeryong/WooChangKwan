@@ -1,4 +1,4 @@
-<template>
+﻿<template>
     <div class="container">
         <div class="row list">
             <div class="col-12">
@@ -243,7 +243,7 @@ export default {
           }
         }
       }
-      axios.get('http://cgw01.nlp.nhnsystem.com:8300/api/item/count/' + id + '/' + target)
+      axios.get('http://localhost:8300/api/item/count/' + id + '/' + target)
         .then(response => {
         })
         .catch(function (error) {
@@ -270,8 +270,8 @@ export default {
           }
         }
       }
-      console.log('http://cgw01.nlp.nhnsystem.com:8300/api/item/limit/' + id + '/' + target);
-      axios.get('http://cgw01.nlp.nhnsystem.com:8300/api/item/limit/' + id + '/' + target)
+      console.log('http://localhost/api/item/limit/' + id + '/' + target);
+      axios.get('http://localhost/api/item/limit/' + id + '/' + target)
         .then(response => {
         })
         .catch(function (error) {
