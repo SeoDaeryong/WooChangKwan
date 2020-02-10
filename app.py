@@ -728,5 +728,4 @@ if __name__ == "__main__":
     # create tmp dir for download content
     make_static_tmp_dir()
 
-    print(woochangkwan_api("a"))
-    #app.run(host="0.0.0.0", port=options.port)
+    app.run(host="0.0.0.0", port=options.port)
