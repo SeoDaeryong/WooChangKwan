@@ -116,7 +116,7 @@ def woochangkwan_api(event, target, start=0):
         template['body']['contents'][0]['contents'][0]['text'] = item["category"]
         bubble_string.append(template)
 
-    message = FlexSendMessage(alt_text="hello", contents=json.loads(bubble_string))
+    message = FlexSendMessage(alt_text="hello", contents=json.loads(str(bubble_string).encode()))
     line_bot_api.reply_message(
         event.reply_token,
         message
