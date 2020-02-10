@@ -52,7 +52,7 @@ from linebot.models import (
 app = Flask(__name__)
 app.wsgi_app = ProxyFix(app.wsgi_app, x_for=1, x_host=1, x_proto=1)
 
-WCK_URL='http://13.125.245.233:8300/api'
+WCK_URL='http://13.125.245.233/index.php'
 with open("bubble_template.txt", "r") as f:
     bubble_template = json.load(f)
 
