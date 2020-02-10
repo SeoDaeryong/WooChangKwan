@@ -53,7 +53,7 @@ app = Flask(__name__)
 app.wsgi_app = ProxyFix(app.wsgi_app, x_for=1, x_host=1, x_proto=1)
 
 WCK_URL='http://13.125.245.233:8300/api'
-with open("bubble_templaste.txt", "r") as f:
+with open("bubble_template.txt", "r") as f:
     bubble_template = json.load(f)
 
 # get channel_secret and channel_access_token from your environment variable
