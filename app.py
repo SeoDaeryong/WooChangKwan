@@ -14,6 +14,7 @@
 
 from __future__ import unicode_literals
 
+import requests
 import datetime
 import errno
 import json
@@ -50,6 +51,10 @@ from linebot.models import (
 
 app = Flask(__name__)
 app.wsgi_app = ProxyFix(app.wsgi_app, x_for=1, x_host=1, x_proto=1)
+
+WCK_URL='http://13.125.245.233:8300/api'
+with open("bubble_templaste.txt", "r") as f:
+    bubble_template = json.load(f)
 
 # get channel_secret and channel_access_token from your environment variable
 channel_secret = os.getenv('LINE_CHANNEL_SECRET', None)
@@ -98,9 +103,32 @@ def callback():
     return 'OK'
 
 
+def woochangkwan_api(event, target, start=0):
+    params = {'category': target}
+    res = requests.get(WCK_URL + "/item", params=params)
+    items = json.loads(res.text)
+    bubble_string = []
+    for item in items[start:start+10]:
+        template = bubble_template
+        template['header']['contents'][0]['text'] = item['name']
+        template['header']['contents'][1]['text'] = "%d%%" % (item['rate'] * 100)
+        template['header']['contents'][2]['contents'][0]['width'] = "%d%%" % (item['rate'] * 100)
+        template['body']['contents'][0]['contents'][0]['text'] = item["category"]
+        bubble_string.append(template)
+
+    message = FlexSendMessage(alt_text="hello", contents=json.loads(bubble_string))
+    line_bot_api.reply_message(
+        event.reply_token,
+        message
+    )
+
+
 @handler.add(MessageEvent, message=TextMessage)
 def handle_text_message(event):
     text = event.message.text
+
+    if text == '전체':
+        woochangkwan_api(event, "CHECK", 0)
 
     if text == 'profile':
         if isinstance(event.source, SourceUser):
@@ -700,4 +728,5 @@ if __name__ == "__main__":
     # create tmp dir for download content
     make_static_tmp_dir()
 
-    app.run(host="0.0.0.0", port=options.port)
+    print(woochangkwan_api("a"))
+    #app.run(host="0.0.0.0", port=options.port)
