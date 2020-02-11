@@ -110,21 +110,26 @@ def woochangkwan_api(event, target, start=0):
     bubble_string = ""
     for item in items[start:start+10]:
         if item['rate'] < 0.3:
-            bgc = "#FF6B6E"
+            bgc = ["#FF6B6E", "#FAD2A76E", "#DE5658"]
         elif item['rate'] < 0.7:
-            bgc = "#A17DF5"
+            bgc = ["#A17DF5", "#9FD8E36E", "#7D51E4"]
         else:
-            bgc = "#27ACB2"
+            bgc = ["#27ACB2", "#9FD8E36E", "#0D8186"]
 
         template = bubble_template
-        template['header']['backgroundColor'] = bgc
+        template['header']['backgroundColor'] = bgc[0]
+        template['header']['contents'][2]['backgroundColor'] = bgc[1]
+        template['header']['contents'][2]['contents'][0]['backgroundColor'] = bgc[2]
         template['header']['contents'][0]['text'] = item['name']
         template['header']['contents'][1]['text'] = "%d%%" % (item['rate'] * 100)
         template['header']['contents'][2]['contents'][0]['width'] = "%d%%" % (item['rate'] * 100)
         template['body']['contents'][0]['contents'][0]['text'] = item["category"]
         template['body']['contents'][1]['contents'][0]['text'] = "현재 상태 %d/%d" % (item['count'], item['limit'])
+        if bubble_string != "":
+            bubble_string += ", "
         bubble_string += str(template).replace("'", "\"").replace("True", "true").replace("False", "false")
 
+    bubble_string = '{"type": "carousel", "contents": [' + bubble_string + ']}'
     message = FlexSendMessage(alt_text="hello", contents=json.loads(str(bubble_string)))
     line_bot_api.reply_message(
         event.reply_token,
