@@ -123,7 +123,7 @@ def woochangkwan_api(event, target, start=0):
         template['header']['contents'][2]['contents'][0]['width'] = "%d%%" % (item['rate'] * 100)
         template['body']['contents'][0]['contents'][0]['text'] = item["category"]
         template['body']['contents'][1]['contents'][0]['text'] = "재고 : %d 요구 수량 : %d" % (item['count'], item['limit'])
-        bubble_string += str(template).replace("'", "\"").replace("True", "true")
+        bubble_string += str(template).replace("'", "\"").replace("True", "true").replace("False", "false")
 
     message = FlexSendMessage(alt_text="hello", contents=json.loads(str(bubble_string)))
     line_bot_api.reply_message(
