@@ -131,7 +131,7 @@ def woochangkwan_api(event, target, start=0):
         bubble_string += str(template).replace("'", "\"").replace("True", "true").replace("False", "false")
 
     bubble_string = '{"type": "carousel", "contents": [' + bubble_string + ']}'
-    message = FlexSendMessage(alt_text="hello", contents=json.loads(str(bubble_string)))
+    message = FlexSendMessage(alt_text="최대 열개의 결과가 보여집니다", contents=json.loads(str(bubble_string)))
     line_bot_api.reply_message(
         event.reply_token,
         message
@@ -144,7 +144,7 @@ def handle_text_message(event):
 
     if text == '전체':
         woochangkwan_api(event, "ALL", 0)
-    elif re.match("부족", text) is not None:
+    elif re.search("부족", text) is not None:
         woochangkwan_api(event, "CHECK", 0)
 
     if text == 'profile':
