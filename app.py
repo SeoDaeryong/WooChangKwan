@@ -20,6 +20,7 @@ import errno
 import json
 import os
 import sys
+import re
 import tempfile
 from argparse import ArgumentParser
 
@@ -142,6 +143,8 @@ def handle_text_message(event):
     text = event.message.text
 
     if text == '전체':
+        woochangkwan_api(event, "ALL", 0)
+    elif re.match("부족", text) is not None:
         woochangkwan_api(event, "CHECK", 0)
 
     if text == 'profile':
