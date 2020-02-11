@@ -109,11 +109,20 @@ def woochangkwan_api(event, target, start=0):
     items = json.loads(res.text)
     bubble_string = []
     for item in items[start:start+10]:
+        if item['rate'] < 0.3:
+            bgc = "#FF6B6E"
+        elif item['rate'] < 0.7:
+            bgc = "#A17DF5"
+        else:
+            bgc = "#27ACB2"
+
         template = bubble_template
+        template['header']['backgroundColor'] = bgc
         template['header']['contents'][0]['text'] = item['name']
         template['header']['contents'][1]['text'] = "%d%%" % (item['rate'] * 100)
         template['header']['contents'][2]['contents'][0]['width'] = "%d%%" % (item['rate'] * 100)
         template['body']['contents'][0]['contents'][0]['text'] = item["category"]
+        template['body']['contents'][1]['contents'][0]['text'] = "재고 : %d 요구 수량 : %d" % (item['count'], item['limit'])
         bubble_string.append(template)
 
     message = FlexSendMessage(alt_text="hello", contents=json.loads(str(bubble_string)))

@@ -66,6 +66,20 @@
                }
             ],
             "flex":1
+         },
+         {
+            "type": "box",
+            "layout": "vertical",
+            "contents": [
+              {
+                "type": "text",
+                "text": "재고 : 3 최소 : 5",
+                "size": "xs",
+                "color": "#8C8C8C",
+                "wrap": false,
+                "align": "center"
+              }
+            ]
          }
       ],
       "spacing":"md",
