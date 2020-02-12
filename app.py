@@ -21,6 +21,7 @@ import json
 import os
 import sys
 import re
+import copy
 import tempfile
 from argparse import ArgumentParser
 
@@ -108,7 +109,7 @@ def woochangkwan_api(event, target, start=0):
     params = {'category': target}
     res = requests.get(WCK_URL + "/item", params=params)
     items = json.loads(res.text)
-    bubble_string = ""
+    flex_template = {"type": "carousel", "contents": []}
     for item in items[start:start+10]:
         if item['rate'] < 0.3:
             bgc = ["#FF6B6E", "#FAD2A76E", "#DE5658"]
@@ -117,7 +118,7 @@ def woochangkwan_api(event, target, start=0):
         else:
             bgc = ["#27ACB2", "#9FD8E36E", "#0D8186"]
 
-        template = bubble_template
+        template = copy.deepcopy(bubble_template)
         template['header']['backgroundColor'] = bgc[0]
         template['header']['contents'][2]['backgroundColor'] = bgc[1]
         template['header']['contents'][2]['contents'][0]['backgroundColor'] = bgc[2]
@@ -126,12 +127,9 @@ def woochangkwan_api(event, target, start=0):
         template['header']['contents'][2]['contents'][0]['width'] = "%d%%" % (item['rate'] * 100)
         template['body']['contents'][0]['contents'][0]['text'] = item["category"]
         template['body']['contents'][1]['contents'][0]['text'] = "현재 상태 %d/%d" % (item['count'], item['limit'])
-        if bubble_string != "":
-            bubble_string += ", "
-        bubble_string += str(template).replace("'", "\"").replace("True", "true").replace("False", "false")
+        flex_template["contents"].append(template)
 
-    bubble_string = '{"type": "carousel", "contents": [' + bubble_string + ']}'
-    message = FlexSendMessage(alt_text="최대 열개의 결과가 보여집니다", contents=json.loads(str(bubble_string)))
+    message = FlexSendMessage(alt_text="최대 열개의 결과가 보여집니다", contents=flex_template)
     line_bot_api.reply_message(
         event.reply_token,
         message
